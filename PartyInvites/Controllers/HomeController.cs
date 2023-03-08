@@ -6,26 +6,29 @@ namespace PartyInvites.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
-
-    public HomeController(ILogger<HomeController> logger)
-    {
-        _logger = logger;
-    }
-
-    public IActionResult Index()
+    public ViewResult Index()
     {
         return View();
     }
 
-    public IActionResult Privacy()
+    [HttpGet]
+    public ViewResult RsvpForm()
     {
         return View();
     }
 
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
+    [HttpPost]
+    public ViewResult RsvpForm(GuestResponse response)
     {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        if (!ModelState.IsValid)
+            return View();
+
+        Repository.AddResponse(response);
+        return View("Thanks", response);
+    }
+
+    public ViewResult ListResponses()
+    {
+        return View(Repository.Responses.Where(response => response.WillAttend == true));
     }
 }
