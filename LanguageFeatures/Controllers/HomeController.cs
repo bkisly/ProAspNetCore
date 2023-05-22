@@ -2,10 +2,16 @@
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            Product[] products = Product.GetProducts();
-            return View(new string[] { products[0].Name });
+            /*Product?[] products = Product.GetProducts()*/;
+            List<string> output = new();
+            await foreach (var length in MyAsyncMethods.GetPageLengthsAsync(output, "microsoft.com", "apress.com", "google.com"))
+            {
+                output.Add($"Page length: {length}");
+            }
+
+            return View(output);
         }
     }
 }
