@@ -5,9 +5,11 @@ namespace SimpleApp.Controllers
 {
     public class HomeController : Controller
     {
+        public IProductsDataSource ProductsDataSource = new ProductsDataSource();
+
         public IActionResult Index()
         {
-            return View(Product.GetProducts());
+            return View(ProductsDataSource.Products);
         }
     }
 }
