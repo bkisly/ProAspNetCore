@@ -1,6 +1,7 @@
 ﻿@page
 @model IdentityUsersModel
 @using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Authorization
 
 <h3 class="bg-primary text-white text-center p-2">Admin User</h3>
 
@@ -34,6 +35,7 @@
 
         public IdentityUser AdminUser { get; set; } = new();
 
+        [Authorize]
         public async Task OnGetAsync()
         {
             AdminUser = await userManager.FindByNameAsync("Admin");
